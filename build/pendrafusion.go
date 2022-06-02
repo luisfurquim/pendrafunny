@@ -2,14 +2,14 @@ package main
 
 import (
    "syscall/js"
-   "github.com/luisfurquim/pendrafunny"
+   "github.com/luisfurquim/pendrafusion"
 )
 
 
 func main() {
    var stop chan struct{}
    stop = make(chan struct{})
-   js.Global().Set("pendrafunny", js.FuncOf(pendrafunny.Convert(stop)))
+   js.Global().Set("pendrafusion", js.FuncOf(pendrafusion.Convert(stop)))
    <-stop
 }
 

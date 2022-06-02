@@ -1,12 +1,11 @@
-package html2pdf
+package pendrafusion
 
 import (
-   "golang.org/x/net/html"
    "golang.org/x/net/html/atom"
 )
 
 func init() {
-   Handler = map[atom.Atom]func(*Converter, *html.Node){
+   Handler = map[atom.Atom]func(*Converter, Node){
       atom.Header: Handler_Head,
       atom.Body: Handler_Body,
       atom.P: Handler_P,

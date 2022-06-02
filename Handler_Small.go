@@ -1,10 +1,6 @@
-package html2pdf
+package pendrafusion
 
-import (
-   "golang.org/x/net/html"
-)
-
-func Handler_Small(cnv *Converter, sel *html.Node) {
+func Handler_Small(cnv *Converter, sel Node) {
    cnv.Format[len(cnv.Format)-1].FontSize = cnv.GetFontSize("2")
    cnv.Apply()
    cnv.convert(sel)

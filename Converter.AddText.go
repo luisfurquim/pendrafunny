@@ -1,4 +1,4 @@
-package html2pdf
+package pendrafusion
 
 func (cnv *Converter) AddText(txt string) {
    var f *Format

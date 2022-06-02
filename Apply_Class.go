@@ -1,17 +1,12 @@
-package html2pdf
+package pendrafusion
 
 import (
    "fmt"
-   "regexp"
    "strings"
-   "golang.org/x/net/html"
 )
 
-var reRGB *regexp.Regexp = regexp.MustCompile(`rgb\(([0-9]+),([0-9]+),([0-9]+)\)`)
-var reHexColor *regexp.Regexp = regexp.MustCompile(`\#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})`)
-
-func Apply_Class(cnv *Converter, sel *html.Node) {
-   var a html.Attribute
+func Apply_Class(cnv *Converter, sel Node) {
+   var val string
    var f *Format
    var parts []string
    var r, g, b int
@@ -21,36 +16,36 @@ func Apply_Class(cnv *Converter, sel *html.Node) {
 
    f = &(cnv.Format[len(cnv.Format)-1])
 
-   for _, a = range sel.Attr {
-      switch a.Key {
-      case "color":
-         if parts = reRGB.FindStringSubmatch(a.Val); len(parts)>0 {
-            fmt.Sscanf(parts[1],"%d",&r)
-            fmt.Sscanf(parts[2],"%d",&g)
-            fmt.Sscanf(parts[3],"%d",&b)
-         } else if parts = reHexColor.FindStringSubmatch(a.Val); len(parts)>0 {
-            fmt.Sscanf(parts[1],"%x",&r)
-            fmt.Sscanf(parts[2],"%x",&g)
-            fmt.Sscanf(parts[3],"%x",&b)
-         } else {
-         }
-         f.FontColor = Color{R:r, G:g, B:b}
-      case "face":
-         if newFont, ok = FontFace[strings.ToLower(a.Val)]; ok {
-            f.FontFace = newFont
-         } else {
-            f.FontFace = a.Val
-         }
-      case "size":
-         sz = cnv.GetFontSize(a.Val)
-         if sz>0 {
-            f.FontSize = sz
-         }
+   if val, ok = sel.Attr("color"); ok {
+      if parts = reRGB.FindStringSubmatch(val); len(parts)>0 {
+         fmt.Sscanf(parts[1],"%d",&r)
+         fmt.Sscanf(parts[2],"%d",&g)
+         fmt.Sscanf(parts[3],"%d",&b)
+      } else if parts = reHexColor.FindStringSubmatch(val); len(parts)>0 {
+         fmt.Sscanf(parts[1],"%x",&r)
+         fmt.Sscanf(parts[2],"%x",&g)
+         fmt.Sscanf(parts[3],"%x",&b)
+      } else {
+      }
+      f.FontColor = Color{R:r, G:g, B:b}
+   }
+
+   if val, ok = sel.Attr("face"); ok {
+      if newFont, ok = FontFace[strings.ToLower(val)]; ok {
+         f.FontFace = newFont
+      } else {
+         f.FontFace = val
+      }
+   }
+
+   if val, ok = sel.Attr("size"); ok {
+      sz = cnv.GetFontSize(val)
+      if sz>0 {
+         f.FontSize = sz
       }
    }
 
    cnv.Apply()
-
    cnv.convert(sel)
 }
 

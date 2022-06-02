@@ -1,4 +1,4 @@
-package html2pdf
+package pendrafusion
 
 func (cnv *Converter) Apply() {
    var oldFmt, newFmt *Format

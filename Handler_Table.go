@@ -1,11 +1,10 @@
-package html2pdf
+package pendrafusion
 
 import (
    "fmt"
-   "golang.org/x/net/html"
 )
 
-func Handler_Table(cnv *Converter, sel *html.Node) {
+func Handler_Table(cnv *Converter, sel Node) {
    var f *Format
    var w float64
    var val string
@@ -13,7 +12,7 @@ func Handler_Table(cnv *Converter, sel *html.Node) {
 
    f = &(cnv.Format[len(cnv.Format)-1])
 
-   if val, ok = GetAttr("width", sel); ok && len(val)>0 {
+   if val, ok = sel.Attr("width"); ok && len(val)>0 {
       if val[len(val)-1] == '%' {
          fmt.Sscanf(val[:len(val)-1], "%f", &w)
          f.Box.W = f.Box.W * w / 100
@@ -36,7 +35,7 @@ func Handler_Table(cnv *Converter, sel *html.Node) {
 
    cnv.Apply()
 
-   Goose.Generate.Logf(5, "Table: %s", sel.Data)
+   Goose.Generate.Logf(5, "Table: %s", sel.Data())
    cnv.convert(sel)
    cnv.Pdf.Write(f.Box.LH, "\n")
 }

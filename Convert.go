@@ -1,11 +1,11 @@
-package pendrafunny
+package pendrafusion
 
 import (
    "syscall/js"
 )
 
 func Convert(stop chan struct{}) (func(this js.Value, p []js.Value) interface{}) {
-   return func(this js.Value, p []js.Value) interface{}) {
+   return func(this js.Value, p []js.Value) interface{} {
 
      handler := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
          var dom, resolve, reject js.Value
@@ -21,6 +21,9 @@ func Convert(stop chan struct{}) (func(this js.Value, p []js.Value) interface{})
             reject.Invoke(js.Global().Get("Error").New("Wrong parameter count! Needs just a dom object (none means document)"))
             return nil
          }
+
+_ = dom
+_ = resolve
 
          return nil
       })

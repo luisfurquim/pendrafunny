@@ -1,22 +1,14 @@
-package pendrafunny
+package pendrafusion
 
 import (
-   "io"
    "github.com/phpdave11/gofpdf"
-   "github.com/PuerkitoBio/goquery"
 )
 
 
-func NewConverter(in io.Reader) (*Converter, error) {
+func NewConverter(n Node) *Converter {
    var cnv Converter
-   var err error
 
-   cnv.Doc, err = goquery.NewDocumentFromReader(in)
-   if err != nil {
-      Goose.Init.Logf(1,"%s: %s", ErrParsing, err)
-      return nil, err
-   }
-
+   cnv.Doc = n
    cnv.Pdf = gofpdf.New("P", "mm", "A4", "")
    cnv.Pdf.AddUTF8Font("notoSans", "", "./fonts/NotoSans-Regular.ttf")
    cnv.Pdf.AddUTF8Font("notoSans", "B", "./fonts/NotoSans-Bold.ttf")
@@ -38,6 +30,6 @@ func NewConverter(in io.Reader) (*Converter, error) {
 
    cnv.Apply()
 
-   return &cnv, nil
+   return &cnv
 }
 

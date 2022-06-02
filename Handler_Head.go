@@ -1,10 +1,6 @@
-package html2pdf
+package pendrafusion
 
-import (
-   "golang.org/x/net/html"
-)
-
-func Handler_Head(cnv *Converter, sel *html.Node) {
+func Handler_Head(cnv *Converter, sel Node) {
    cnv.convert(sel)
 }
 

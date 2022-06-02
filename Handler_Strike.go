@@ -1,10 +1,6 @@
-package html2pdf
+package pendrafusion
 
-import (
-   "golang.org/x/net/html"
-)
-
-func Handler_Strike(cnv *Converter, sel *html.Node) {
+func Handler_Strike(cnv *Converter, sel Node) {
    var f *Format
 
    f = &(cnv.Format[len(cnv.Format)-1])

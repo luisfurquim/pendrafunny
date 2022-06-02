@@ -1,4 +1,4 @@
-package pendrafunny
+package pendrafusion
 
 import (
    "errors"
@@ -7,7 +7,6 @@ import (
    "golang.org/x/net/html/atom"
    "github.com/phpdave11/gofpdf"
    "github.com/luisfurquim/goose"
-   "github.com/PuerkitoBio/goquery"
 )
 
 type Box struct {
@@ -30,13 +29,26 @@ type Format struct {
 }
 
 type Converter struct {
-   Doc *goquery.Document
+   Doc Node
    Pdf *gofpdf.Fpdf
    UseScript bool
    Format []Format
 }
 
 type Node interface {
+   Attr(string) (string, bool)
+//   Attrs() []Attribute
+   FirstChild() Node
+   NextSibling() Node
+   Type() html.NodeType
+   Data() string
+   DataAtom() atom.Atom
+   Find(string) []Node
+}
+
+type Attribute interface {
+   Key() string
+   Val() string
 }
 
 type GooseG struct {
@@ -46,10 +58,12 @@ type GooseG struct {
 
 var Goose GooseG
 
-var Handler map[atom.Atom]func(*Converter, *html.Node)
+var reRGB *regexp.Regexp = regexp.MustCompile(`rgb\(([0-9]+),([0-9]+),([0-9]+)\)`)
+var reHexColor *regexp.Regexp = regexp.MustCompile(`\#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})`)
+
+var Handler map[atom.Atom]func(*Converter, Node)
 
 var reSpc *regexp.Regexp = regexp.MustCompile(`\s+`)
 
-var ErrParsing error = errors.New("Error parsing html data")
 var ErrGenerating error = errors.New("Error generating pdf data")
 

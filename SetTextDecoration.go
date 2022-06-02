@@ -1,4 +1,4 @@
-package pendrafunny
+package pendrafusion
 
 func SetTextDecoration(old string, new byte) string {
    var i int
